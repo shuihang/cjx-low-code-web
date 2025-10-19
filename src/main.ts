@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router/index'
 import { createPinia } from 'pinia'
 
-import CjxLowCode from 'cjx-low-code'
+import CjxLowCode, { $XDialog } from 'cjx-low-code'
 
 // 初始化多语言
 import { setupI18n } from '@/plugins/vueI18n'
@@ -16,6 +16,7 @@ import { loadSlim } from "@tsparticles/slim" // 引入slim版本引擎
 
 import 'virtual:uno.css'
 import 'element-plus/dist/index.css'
+import 'cjx-low-code/dist/index.css'
 
 const setupAll = async () => {
   const app = createApp(App)
@@ -28,6 +29,8 @@ const setupAll = async () => {
   });
   
   app.use(CjxLowCode)
+
+  app.config.globalProperties.$XDialog = $XDialog(app._context)
 
   setupI18n(app)
 

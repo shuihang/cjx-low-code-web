@@ -10,7 +10,7 @@
           <template #icon>
             <RenderVNode :v-node="item.icon()" />
           </template>
-          {{ item.name }}
+          {{ item.label }}
         </el-button>
       </div>
     </div>

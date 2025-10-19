@@ -1,8 +1,12 @@
 // import { PartialTextComponentProps } from './hooks/useComponentCommon'
-import type { FunctionalComponent } from 'vue'
+import type { FunctionalComponent, Component } from 'vue'
 import type { FormItemType, FormTypeProps } from 'cjx-low-code'
-import { Open } from '@element-plus/icons-vue'
+import { ElInput, ElSelect, ElOption, ElRadioGroup, ElRadio, ElCheckbox, ElCheckboxGroup, ElSwitch } from 'element-plus'
 import { SingleLineTextBox, MultiLineTextBox, DropdownBox, DropdownMultiBox, RadioButton, CheckBox, Switch } from '@/components/icon'
+
+export {
+  FormTypeProps
+}
 
 type PartialArgs<T> = {
   [K in keyof T]?: T[K] 
@@ -10,20 +14,21 @@ type PartialArgs<T> = {
 
 type IconType<T extends FunctionalComponent> = T extends (...args: infer Args) => infer R ? (...args: PartialArgs<Args>) => R  : never
 
-export type FormComponentProps = {
-  [key in FormItemType]?: FormTypeProps[key]
-} & {
-  name: string
-  type: FormItemType,
+export type FormComponentProps = PickFormComponentProps & {
   icon: IconType<FunctionalComponent>
-  dicData?: Array<{ label: string, value: string }>
 }
+
+export type PickFormComponentProps = {
+  label: string
+  type: FormItemType,
+  dicData?: Array<{ label: string, value: string }>
+} & FormTypeProps
 
 
 function getDefaultFormTemplates(color: string): FormComponentProps[] {
   return [
     {
-      name: '单行文本框',
+      label: '单行文本框',
       type: 'input',
       icon: SingleLineTextBox,
       input: {
@@ -31,16 +36,17 @@ function getDefaultFormTemplates(color: string): FormComponentProps[] {
       }
     },
     {
-      name: '多行文本框',
+      label: '多行文本框',
       type: 'textarea',
       icon: MultiLineTextBox,
       textarea: {
+        type: 'textarea',
         placeholder: '请输入',
         rows: 4,
       }
     },
     {
-      name: '下拉框',
+      label: '下拉框',
       type: 'select',
       icon: DropdownBox,
       select: {
@@ -54,7 +60,7 @@ function getDefaultFormTemplates(color: string): FormComponentProps[] {
       ]
     },
     {
-      name: '下拉多选框',
+      label: '下拉多选框',
       type: 'select',
       icon: DropdownMultiBox,
       select: {
@@ -69,7 +75,7 @@ function getDefaultFormTemplates(color: string): FormComponentProps[] {
       ]
     },
     {
-      name: '单选框',
+      label: '单选框',
       type: 'radio',
       icon: RadioButton,
       radio: {
@@ -83,7 +89,7 @@ function getDefaultFormTemplates(color: string): FormComponentProps[] {
       ]
     },
     {
-      name: '复选框',
+      label: '复选框',
       type: 'checkbox',
       icon: CheckBox,
       checkbox: {
@@ -97,7 +103,7 @@ function getDefaultFormTemplates(color: string): FormComponentProps[] {
       ]
     },
     {
-      name: '开关',
+      label: '开关',
       type: 'switch',
       icon: Switch,
       switch: {
