@@ -21,10 +21,10 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     env = loadEnv(mode, root)
   }
   return {
-    base: env.VITE_BASE_PATH,
+    base: env.VITE_BASE_PATH || '/',
     root: root,
     // 指定静态资源目录
-    publicDir: 'public',
+    // publicDir: 'public',
     // 如果需要指定 HTML 入口文件位置，可以使用以下配置：
     // root: pathResolve('src'), // 将根目录设置为 src
     // 或者使用插件来指定 HTML 文件位置

@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import TopBar from "../components/topBar/index.vue"
+import Home from "@/views/home/index.vue"
+import FormDesign from "@/views/formDesign/index.vue"
 
 const router = createRouter({
   history: createWebHistory(),
@@ -13,17 +15,27 @@ const router = createRouter({
         isAuth: false,
       },
       components: {
-        default: import('@/views/home/index.vue'),
-        TopBar: <TopBar type="home" buttonAuth="default" />,
+        default: Home,
+        TopBar: TopBar,
+      },
+      props: {
+        TopBar: { type: "home", buttonAuth: "default" }
       }
     },
     {
       path: '/form-design',
       name: 'FormDesign',
-      components: {
-        default: import('@/views/formDesign/index.vue'),
-        TopBar: <TopBar type="form-design" buttonAuth="editor" />,
+      meta: {
+        title: '表单设计',
+        isAuth: true,
       },
+      components: {
+        default: FormDesign,
+        TopBar: TopBar,
+      },
+      props: {
+        TopBar: { type: "form-design", buttonAuth: "editor" }
+      }
     },
     {
       path: '/login',

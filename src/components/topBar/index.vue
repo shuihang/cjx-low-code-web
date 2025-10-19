@@ -4,7 +4,7 @@
     <Logo></Logo>
     
     <div class="header_right">
-      <el-button v-if="!isLogin" type="primary" class="m-r-18px" @click="jumpPage('/login')">登陆</el-button>
+      <el-button v-if="!isLogin" round type="primary" class="m-r-18px" @click="jumpPage('/login')">登陆</el-button>
 
       
         <el-row :gutter="16" >
