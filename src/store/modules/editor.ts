@@ -2,22 +2,22 @@
 import { defineStore } from 'pinia'
 import { v4 as uuidv4 } from 'uuid'
 
-import type { FormItemType, FormTypeProps } from 'cjx-low-code'
+import type { FormItemType, FormColumnProps } from 'cjx-low-code'
 import type { PickFormComponentProps, FormComponentProps } from '@/defaultFormTemplates'
 
 
-import { commonDefaultProps, formItemsDefaultProps } from '@/defaultProps'
+import { FormItemsDefaultPropsType, formItemsDefaultProps } from '@/defaultProps'
 
 import omit from '@/utils/omit'
 
-export type ComponentData = {
-  // id, uuid 生成
-  id: string
-} & PickFormComponentProps
+// export type ComponentData = {
+//   // id, uuid 生成
+//   id: string
+// } & PickFormComponentProps
 
 export interface EditorProps {
   // 供中间编辑器渲染的数组
-  components: ComponentData[]
+  components: FormColumnProps[]
   // 当前编辑的是那个元素 uuid
   currentElement: string,
 }
@@ -40,15 +40,18 @@ const useEditorStore = defineStore('editor', {
   }),
   actions: {
     addComponents(props: FormComponentProps) {
-      const obj: PickFormComponentProps = omit(props, ['icon'])
+      // const obj: PickFormComponentProps = omit(props, ['icon'])
+      const { type, label } = props
 
-      const item: ComponentData = {
-        id: uuidv4(),
-        ...obj
+      const item: FormColumnProps = {
+        ...formItemsDefaultProps[type],
+        type,
+        prop: uuidv4(),
+        label,
       }//  Object.assign({}, commonDefaultProps, formItemsDefaultProps[type], props, { id: uuidv4() })
       // @ts-ignore
       this.components.push(item)
-      // console.log(1111, this.components)
+      console.log(1111, this.components)
     },
     setActive(currentId: string) {
       // console.log(currentId)
@@ -56,7 +59,7 @@ const useEditorStore = defineStore('editor', {
     },
     updateComponents(data: { key: string, value: string, id?: string}) {
       const { key, value, id } = data
-      const updateComponents = this.components.find(item => item.id === id)
+      const updateComponents = this.components.find(item => item.prop === id)
 
       // if (updateComponents) {
       //   const strArr = updateComponents.props.boxShadow?.split(' ') as [string, string, string, string]
@@ -84,7 +87,7 @@ const useEditorStore = defineStore('editor', {
   getters: {
     getCurrentElement: (state)  =>  {
       // @ts-ignore
-      return state.components.find(item => item.id === state.currentElement)
+      return state.components.find(item => item.prop === state.currentElement)
     }
   }
 })

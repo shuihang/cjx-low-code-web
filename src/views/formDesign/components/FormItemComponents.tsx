@@ -2,8 +2,8 @@ import { defineComponent, createVNode } from 'vue'
 import type { Component } from 'vue'
 import { ElRow, ElCol, ElForm, ElFormItem, ElInput, ElSelect, ElOption, ElRadioGroup, ElRadio, ElCheckbox, ElCheckboxGroup, ElSwitch } from 'element-plus'
 import useEditorStore from '@/store/modules/editor'
-import type { ComponentData } from '@/store/modules/editor'
-import type { FormItemType, FormTypeProps } from 'cjx-low-code'
+import type { FormItemsDefaultPropsType } from '@/defaultProps'
+import type { FormItemType, FormTypeProps, FormColumnProps } from 'cjx-low-code'
 import { objectType } from '@/utils/type'
 
 type ComponentsMapType = {
@@ -51,7 +51,7 @@ const componentsMap: ComponentsMapType= {
 export default defineComponent({
   name: 'FormCanvas',
   props: {
-    option: objectType<ComponentData>()
+    option: objectType<FormColumnProps>()
   },
   setup(props) {
     // 因为是个方法，所以我们得调用一下
@@ -61,11 +61,12 @@ export default defineComponent({
       // console.log('components', components)
       
       const { option } = props
-      const { dicData } = option
-      const currentProps = option[option.type]
+      const { type = 'input' , dicData } = option
+      
+      const currentProps = option[type]
     
-      const Components = componentsMap[option.type]?.component
-      const SubComponents = componentsMap[option.type]?.subComponent
+      const Components = componentsMap[type]?.component
+      const SubComponents = componentsMap[type]?.subComponent
       
       return (<>
         <ElFormItem label={option.label}>

@@ -21,7 +21,7 @@
           <PreviewMenu />
           <div id="canvas-area" class="bg-white w-100% h-[calc(100%-20px)] box-border p-20px">
             <!-- <VueDraggable v-model="formOption.column" target=".edit-wrapper" item-key="prop" :animation="150"> -->
-              <EditWrapper v-for="item in components" :key="item.id" :option="item" :id="item.id" @set-active="setActive" >
+              <EditWrapper v-for="item in components" :key="item.prop" :option="item" :id="item.prop" @set-active="setActive" >
                 <FormItemComponents :option="item" />
               </EditWrapper>
             <!-- </VueDraggable> -->
@@ -97,7 +97,6 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
 }
 
 const addItem = (row: FormComponentProps) => {
-  console.log("addItem", row)
   useEditorStore().addComponents(row)
 }
 

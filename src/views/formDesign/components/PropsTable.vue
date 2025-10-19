@@ -12,7 +12,8 @@
             <span class="label"> {{ value.text }}： </span>
             
             <component class="prop-component"
-              :is="value.component" :value="value.value"
+              :is="value.component"
+              v-model="value.value"
               v-bind="value.extraProps"
               v-on="value.events"
               >
@@ -125,7 +126,7 @@ function getFinalProps():PropsToFormsList {
   return reduce(mapPropsToFormsList, (result, value, index) => { 
   
     // console.log(value)
-    const mapPropsToForms = reduce(testType, (resultArr, res, key) => { 
+    const mapPropsToForms = reduce(props.type, (resultArr, res, key) => { 
       
       // console.log(1111, value.mapPropsToForms, key)
       const item = value.mapPropsToForms[key]

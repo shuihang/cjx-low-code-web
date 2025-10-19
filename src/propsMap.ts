@@ -1,6 +1,7 @@
 import { VNode, h } from 'vue'
 import type { FormColumnProps, FormTypeProps } from 'cjx-low-code'
 import type { ControlPropertiesProps } from './defaultProps'
+import { E } from 'dist/assets/index-ii1mhGE2'
 
 
 // 字体
@@ -113,13 +114,13 @@ export default function getMapPropsToFormsList(color: string): PropsToFormsList 
           text: '字段名',
           component: 'el-input',
           extraProps: {},
-          afterTransform: (e: any) => e.target.value
+          afterTransform: (e: any) => e
         },
         placeholder: {
           text: '占位符',
           component: 'el-input',
           extraProps: {},
-          afterTransform: (e: any) => e.target.value
+          afterTransform: (e: any) => e
         },
         span: {
           component: 'el-radio-group',
@@ -135,7 +136,7 @@ export default function getMapPropsToFormsList(color: string): PropsToFormsList 
             { label: '3/4', value: 18 },
             { label: '1', value: 24 },
           ],
-          afterTransform: (e: any) => e.target.value
+          afterTransform: (e: any) => e
         },
       }
     },

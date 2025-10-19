@@ -31,33 +31,16 @@ function getDefaultFormTemplates(color: string): FormComponentProps[] {
       label: '单行文本框',
       type: 'input',
       icon: SingleLineTextBox,
-      input: {
-        placeholder: '请输入',
-      }
     },
     {
       label: '多行文本框',
       type: 'textarea',
       icon: MultiLineTextBox,
-      textarea: {
-        type: 'textarea',
-        placeholder: '请输入',
-        rows: 4,
-      }
     },
     {
       label: '下拉框',
       type: 'select',
       icon: DropdownBox,
-      select: {
-        placeholder: '请选择',
-      },
-      dicData: [
-        { label: '选项1', value: '1' },
-        { label: '选项2', value: '2' },
-        { label: '选项3', value: '3' },
-        { label: '选项4', value: '4' },
-      ]
     },
     {
       label: '下拉多选框',
@@ -67,48 +50,21 @@ function getDefaultFormTemplates(color: string): FormComponentProps[] {
         placeholder: '请选择',
         multiple: true
       },
-      dicData: [
-        { label: '选项1', value: '1' },
-        { label: '选项2', value: '2' },
-        { label: '选项3', value: '3' },
-        { label: '选项4', value: '4' },
-      ]
     },
     {
       label: '单选框',
       type: 'radio',
       icon: RadioButton,
-      radio: {
-
-      },
-      dicData: [
-        { label: '选项1', value: '1' },
-        { label: '选项2', value: '2' },
-        { label: '选项3', value: '3' },
-        { label: '选项4', value: '4' },
-      ]
     },
     {
       label: '复选框',
       type: 'checkbox',
       icon: CheckBox,
-      checkbox: {
-        
-      },
-      dicData: [
-        { label: '选项1', value: '1' },
-        { label: '选项2', value: '2' },
-        { label: '选项3', value: '3' },
-        { label: '选项4', value: '4' },
-      ]
     },
     {
       label: '开关',
       type: 'switch',
       icon: Switch,
-      switch: {
-        
-      },
     }
   ]
 }
