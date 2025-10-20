@@ -14,5 +14,4 @@ const formOptions = computed<FormOption>(() => ({
   menuBtn: false,
   column: components.value
 }))
-console.log(components.value)
 </script>

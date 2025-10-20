@@ -11,7 +11,7 @@ import PreviewSourceCode from './PreviewSourceCode.vue'
 const proxy = getCurrentInstance()?.appContext.config.globalProperties
 
 const openPreviewSourceCode = () => {
-  proxy?.$XDialog(PreviewSourceCode, {
+  proxy?.$Dialog(PreviewSourceCode, {
     option: {
       title: '预览源码',
     }
@@ -19,7 +19,7 @@ const openPreviewSourceCode = () => {
 }
 
 const openPreviewForm = () => {
-  proxy?.$XDialog(PreviewForm, {
+  proxy?.$Dialog(PreviewForm, {
     option: {
       title: '预览表单',
     }

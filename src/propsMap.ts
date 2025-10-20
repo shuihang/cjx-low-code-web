@@ -1,7 +1,6 @@
 import { VNode, h } from 'vue'
 import type { FormColumnProps, FormTypeProps } from 'cjx-low-code'
 import type { ControlPropertiesProps } from './defaultProps'
-import { E } from 'dist/assets/index-ii1mhGE2'
 
 
 // 字体
@@ -113,6 +112,7 @@ export default function getMapPropsToFormsList(color: string): PropsToFormsList 
         label: {
           text: '字段名',
           component: 'el-input',
+          eventName: 'input',
           extraProps: {},
           afterTransform: (e: any) => e
         },

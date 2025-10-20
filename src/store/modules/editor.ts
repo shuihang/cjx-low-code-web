@@ -1,7 +1,7 @@
 /** 编辑器 业务组件 pinia */
 import { defineStore } from 'pinia'
 import { v4 as uuidv4 } from 'uuid'
-
+import { cloneDeep } from 'lodash-es'
 import type { FormItemType, FormColumnProps } from 'cjx-low-code'
 import type { PickFormComponentProps, FormComponentProps } from '@/defaultFormTemplates'
 
@@ -59,7 +59,9 @@ const useEditorStore = defineStore('editor', {
     },
     updateComponents(data: { key: string, value: string, id?: string}) {
       const { key, value, id } = data
-      const updateComponents = this.components.find(item => item.prop === id)
+      const updateComponents = this.components.find(item => item.prop === (id || this.currentElement))
+      // console.log(key, value, id)
+      if (!updateComponents) return
 
       // if (updateComponents) {
       //   const strArr = updateComponents.props.boxShadow?.split(' ') as [string, string, string, string]
@@ -77,12 +79,32 @@ const useEditorStore = defineStore('editor', {
       //   }
         
       //   updateComponents.props.boxShadow = strArr.join(' ')
-      //   updateComponents.props[key] = value
+     
+      updateComponents[key] = value
       //   // console.log(updateComponents.props[key], value)
       // }
 
     
     },
+    clearComponents() {
+      this.components = []
+    },
+    deleteComponents() {
+      this.components = this.components.filter(item => item.prop !== this.currentElement)
+    },
+  
+    copyComponents() {
+      const currentElement = this.getCurrentElement
+      if (!currentElement) return
+      const copyItem = cloneDeep(currentElement)
+      copyItem.prop = uuidv4()
+      this.components.push(copyItem)
+    },
+    moveComponents(fromIndex: number, toIndex: number) {
+      if (fromIndex === toIndex) return
+      const [movedItem] = this.components.splice(fromIndex, 1)
+      this.components.splice(toIndex, 0, movedItem)
+    }
   },
   getters: {
     getCurrentElement: (state)  =>  {

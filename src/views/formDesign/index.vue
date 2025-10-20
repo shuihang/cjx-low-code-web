@@ -20,11 +20,13 @@
         <div class="h-100% w-100%" id="editorContainer">
           <PreviewMenu />
           <div id="canvas-area" class="bg-white w-100% h-[calc(100%-20px)] box-border p-20px">
-            <!-- <VueDraggable v-model="formOption.column" target=".edit-wrapper" item-key="prop" :animation="150"> -->
-              <EditWrapper v-for="item in components" :key="item.prop" :option="item" :id="item.prop" @set-active="setActive" >
-                <FormItemComponents :option="item" />
-              </EditWrapper>
-            <!-- </VueDraggable> -->
+           
+              <el-row>
+                <DndProvider :backend="HTML5Backend">
+                  <DropZone />
+                </DndProvider>
+              </el-row>
+            
           </div>
         </div>
       </el-main>
@@ -36,7 +38,7 @@
           @tab-click="handleClick"
         >
           <el-tab-pane label="控件属性" name="prop" v-if="currentElement">
-            <PropsTable :type="getCurrentElement"  />
+            <PropsTable :data="getCurrentElement" @change="handleChange" />
           </el-tab-pane>
           <el-tab-pane label="表单属性" name="second">待开发</el-tab-pane>
           <el-tab-pane label="表单主题" name="third">待开发</el-tab-pane>
@@ -48,15 +50,16 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { VueDraggable } from 'vue-draggable-plus'
 import type { CSSProperties } from 'vue'
+import { DndProvider } from 'vue3-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+
 import { storeToRefs } from 'pinia';
 import type { TabsPaneContext } from 'element-plus'
 import type { FormOption } from 'cjx-low-code'
 import ComponentsList from '@/components/common/ComponentsList.vue'
 import PreviewMenu from './components/PreviewMenu.vue';
-import EditWrapper from './components/EditWrapper'
-import FormItemComponents from './components/FormItemComponents'
+import DropZone from './components/DropZone.vue'
 import PropsTable from './components/PropsTable.vue'
 import type { FormComponentProps } from '@/defaultFormTemplates'
 import useEditorStore from '@/store/modules/editor'
@@ -75,20 +78,6 @@ const siderStyle: CSSProperties = {
 const activeName = ref('control')
 const activeKeyRight = ref('prop')
 
-const formOption = ref<FormOption>({
-  menuBtn: false,
-  formSpan: 12,
-  column: [
-    {
-      label: '姓名',
-      prop: 'name',
-    },
-    {
-      label: '年龄',
-      prop: 'age',
-    },
-  ]
-})
 
 const form = ref({})
 
@@ -100,10 +89,10 @@ const addItem = (row: FormComponentProps) => {
   useEditorStore().addComponents(row)
 }
 
-const setActive = (id: string) => {
-  useEditorStore().setActive(id)
-}
 
+const handleChange = ({ key, value }) =>{
+  useEditorStore().updateComponents({key, value})
+}
 </script>
 
 <style lang="scss" scoped>

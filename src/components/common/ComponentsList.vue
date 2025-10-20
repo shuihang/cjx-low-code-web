@@ -49,6 +49,7 @@ const mouseEnter = (data: {row: FormComponentProps, elementId: string}) => {
 
 // 鼠标拖拽 给画布添加元素
 const mouseStartDrop = (enterComponent: FormComponentProps) => {
+  return
   const editorContainer = document.getElementById('editorContainer') as HTMLDivElement
   const canvasArea = document.getElementById('canvas-area') as HTMLDivElement
 

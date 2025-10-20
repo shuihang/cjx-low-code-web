@@ -30,7 +30,7 @@ const setupAll = async () => {
   
   app.use(CjxLowCode)
 
-  app.config.globalProperties.$XDialog = $XDialog(app._context)
+  app.config.globalProperties.$Dialog = $XDialog(app._context)
 
   setupI18n(app)
 

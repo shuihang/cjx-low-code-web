@@ -1,7 +1,7 @@
 <template>
   <div class="props-table" >
     <el-collapse v-model="activeKey" >
-      <el-collapse-item v-for="(item, index) of finalProps"
+      <el-collapse-item isActive v-for="(item, index) of finalProps"
         :name="index + 1"  :title="item.attributeName" >
         <div
           v-for="(value, key) in item.mapPropsToForms"
@@ -49,7 +49,7 @@ import type { PropsToForm } from '@/propsMap'
 // import { PartialTextComponentProps } from '../../hooks/useComponentCommon'
 import RenderVNode from '@/components/common/RenderVNode'
 import type { ControlPropertiesProps } from '@/defaultProps'
-import type { FormItemType } from 'cjx-low-code'
+import type { FormColumnProps } from 'cjx-low-code'
 import useTheme from '@/store/modules/theme'
 
 const { themeColor } = storeToRefs(useTheme())
@@ -94,13 +94,13 @@ type PropsToFormsList = Array<{
 }>
 
 interface Props {
-  type: FormItemType
+  data: FormColumnProps
 }
 
-const activeKey = ref<string[]>(['']);
+const activeKey = ref<(string | number)[]>(['']);
 
 setTimeout(() => {
-  activeKey.value = ['1']
+  activeKey.value = [1, 2, 3, 4]
 }, 100)
 
 let mapPropsToFormsList = getMapPropsToFormsList(themeColor.value)
@@ -122,11 +122,11 @@ const finalProps = ref<PropsToFormsList>(getFinalProps())
 
 
 function getFinalProps():PropsToFormsList {
-  console.log(1111, props.type)
+  // console.log(1111, props.type)
   return reduce(mapPropsToFormsList, (result, value, index) => { 
   
     // console.log(value)
-    const mapPropsToForms = reduce(props.type, (resultArr, res, key) => { 
+    const mapPropsToForms = reduce(props.data, (resultArr, res, key) => { 
       
       // console.log(1111, value.mapPropsToForms, key)
       const item = value.mapPropsToForms[key]
@@ -147,10 +147,9 @@ function getFinalProps():PropsToFormsList {
           },
         }
 
-        // console.log(0, resultArr)
         resultArr[key] = newItem
       }
-      // console.log(0, resultArr)
+      console.log(0, resultArr)
       return resultArr; 
     }, {} as FormProps); 
 

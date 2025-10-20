@@ -73,7 +73,7 @@ declare module 'vue' {
      *  }
      * ```
      */
-    $XDialog: DialogDirectiveInterface; // 这里填类型
+    $Dialog: DialogDirectiveInterface; // 这里填类型
   }
 }
 
