@@ -98,8 +98,9 @@ export type PropsToForms = {
   [p in keyof ControlPropertiesProps]?: PropsToForm
 }
 
-type PropsToFormsList = Array<{
+export type PropsToFormsList = Array<{
   attributeName: string,
+  objName?: string,
   mapPropsToForms: PropsToForms
 }>
 
@@ -119,7 +120,21 @@ export default function getMapPropsToFormsList(color: string): PropsToFormsList 
         placeholder: {
           text: '占位符',
           component: 'el-input',
-          extraProps: {},
+          direction: 'vertical',
+          eventName: 'input',
+          extraProps: {
+            type: 'textarea'
+          },
+          afterTransform: (e: any) => e
+        },
+        labelTip: {
+          text: '标题提示语',
+          component: 'el-input',
+          direction: 'vertical',
+          eventName: 'input',
+          extraProps: {
+            type: 'textarea'
+          },
           afterTransform: (e: any) => e
         },
         span: {
@@ -148,6 +163,7 @@ export default function getMapPropsToFormsList(color: string): PropsToFormsList 
     // },
     {
       attributeName: '样式设置',
+      objName: 'style',
       mapPropsToForms: {
         fontFamily: {
           text: '标题字体',
@@ -167,6 +183,13 @@ export default function getMapPropsToFormsList(color: string): PropsToFormsList 
           },
           initialTransform: (v: string) =>  parseInt(v),
           afterTransform: (e: number) => e ? `${e}px` : ''
+        },
+        color: {
+          text: '标题颜色',
+          component: 'b-color-picker',
+          extraProps: {
+            
+          }
         },
         // borderColor: {
         //   text: '标题颜色',

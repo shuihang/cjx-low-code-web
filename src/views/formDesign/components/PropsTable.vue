@@ -14,6 +14,7 @@
             <component class="prop-component"
               :is="value.component"
               v-model="value.value"
+
               v-bind="value.extraProps"
               v-on="value.events"
               >
@@ -43,7 +44,7 @@
 import { ref, watch } from 'vue';
 import type { CSSProperties } from 'vue';
 import { storeToRefs } from 'pinia';
-import { reduce } from 'lodash'
+import { reduce } from 'lodash-es'
 import getMapPropsToFormsList from '@/propsMap'
 import type { PropsToForm } from '@/propsMap'
 // import { PartialTextComponentProps } from '../../hooks/useComponentCommon'
@@ -90,6 +91,7 @@ type FormProps = {
 
 type PropsToFormsList = Array<{
   attributeName: string,
+  objName: string,
   mapPropsToForms: FormProps
 }>
 
@@ -149,7 +151,7 @@ function getFinalProps():PropsToFormsList {
 
         resultArr[key] = newItem
       }
-      console.log(0, resultArr)
+      // console.log(0, resultArr)
       return resultArr; 
     }, {} as FormProps); 
 
@@ -214,11 +216,11 @@ watch(() => themeColor.value, (newVal) => {
       }
     }
     .label {
-      width: 28%;
+      width: 30%;
       
     }
     .prop-component {
-      width: 70%;
+      width: 68%;
     }
   }
   

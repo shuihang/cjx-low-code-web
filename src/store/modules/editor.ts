@@ -39,9 +39,9 @@ const useEditorStore = defineStore('editor', {
     currentElement: ''
   }),
   actions: {
-    addComponents(props: FormComponentProps) {
+    addComponents(props: FormComponentProps & { insertIndex?: number, insertType?: string }) {
       // const obj: PickFormComponentProps = omit(props, ['icon'])
-      const { type, label } = props
+      const { type, label, insertIndex, insertType } = props
 
       const item: FormColumnProps = {
         ...formItemsDefaultProps[type],
@@ -49,9 +49,17 @@ const useEditorStore = defineStore('editor', {
         prop: uuidv4(),
         label,
       }//  Object.assign({}, commonDefaultProps, formItemsDefaultProps[type], props, { id: uuidv4() })
-      // @ts-ignore
-      this.components.push(item)
-      console.log(1111, this.components)
+      
+      // 如果指定了插入位置，在指定位置插入；否则添加到末尾
+      if (insertIndex !== undefined && insertIndex >= 0) {
+        // @ts-ignore
+        this.components.splice(insertIndex, 0, item)
+        console.log(`在位置 ${insertIndex} 插入组件 (${insertType}):`, item)
+      } else {
+        // @ts-ignore
+        this.components.push(item)
+        console.log('添加组件到末尾:', item)
+      }
     },
     setActive(currentId: string) {
       // console.log(currentId)

@@ -29,7 +29,7 @@
     "@wangeditor/editor-for-vue": "^5.1.12",
     "@zxcvbn-ts/core": "^3.0.4",
     "axios": "^1.12.2",
-    "cjx-low-code": "0.0.0-dev.46",
+    "cjx-low-code": "0.0.0-dev.47",
     "cropperjs": "^2.0.1",
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.18",
@@ -71,6 +71,7 @@
     "pnpm": ">=8.6.0"
   },
   "dependencies": {
+    "@ctrl/tinycolor": "4.0.2",
     "@types/lodash-es": "^4.17.12",
     "highlight.js": "^11.11.1",
     "lodash": "^4.17.21",

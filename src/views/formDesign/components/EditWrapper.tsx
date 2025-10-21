@@ -1,5 +1,4 @@
 import { defineComponent, toRefs } from 'vue'
-import { useDrag } from 'vue3-dnd'
 import { storeToRefs } from 'pinia';
 import { ElCol, ElButton } from 'element-plus'
 import type { FormColumnProps } from 'cjx-low-code'
@@ -23,31 +22,26 @@ export default defineComponent({
 
     const { option, index } = toRefs(props)
 
-    const [collect, dragRef] = useDrag({
-      type: 'FORM_ITEM', // 定义拖拽类型，放置目标通过此类型识别
-      item: { 
-        type: 'FORM_ITEM',
-        index: index,
-        id: option.value.prop
-      },
-      collect: (monitor) => ({
-        isDragging: monitor.isDragging() // 收集拖拽状态用于样式反馈
-      })
-    })
-
-    const { isDragging } = collect.value
+    const editWrapperRef = ref<HTMLDivElement>()
 
     const onSetActive = () => {
       emit('setActive', props.id)
+    }
+
+    const mouseEnter = () => {
+      // emit('setHover', props.id)
+      // console.log('mouseEnter', editWrapperRef.value?.getBoundingClientRect())
     }
     
     return () => {
       return (
        
         <div
-          ref={dragRef}
-          class={['edit-wrapper drag-item w-100%', currentElement.value === props.id && 'active', isDragging && 'opacity-50' ]}
+          ref={editWrapperRef}
+          draggable="true"
+          class={['edit-wrapper w-100%', currentElement.value === props.id && 'active' ]}
           onClick={onSetActive}
+           onMouseenter={mouseEnter}
         >
           <div class='pointer-events-none'>
             { slots.default?.() }

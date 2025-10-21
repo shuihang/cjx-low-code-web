@@ -1,5 +1,5 @@
 <template>
-  <div :ref="dropRef" class="sortable-container w-100%">
+  <div class="sortable-container w-100%">
     <!-- 使用 ElRow 实现智能布局 -->
     <el-row :gutter="8" class="smart-layout">
       <el-col
@@ -32,7 +32,6 @@
 </template>
 
 <script setup lang="ts">
-import { useDrop } from 'vue3-dnd'
 import { storeToRefs } from 'pinia'
 import { ref, reactive, computed, onMounted, onUnmounted, watch } from 'vue'
 import { ElRow, ElCol } from 'element-plus'
@@ -63,6 +62,7 @@ const shouldUseHorizontalLayout = computed(() => {
 
 // 检测容器宽度
 const checkContainerWidth = () => {
+  return
   const container = document.querySelector('.sortable-container')
   if (container) {
     containerWidth.value = container.clientWidth
@@ -255,45 +255,6 @@ const deleteItem = () => {
   useEditorStore().deleteComponents()
 }
 
-const [collect, dropRef] = useDrop({
-  accept: 'FORM_ITEM', // 只接受类型为 'FORM_ITEM' 的拖拽源
-  hover: (draggedItem: any, monitor: any) => {
-    // 在拖拽过程中更新插入指示器位置
-    if (monitor.isOver({ shallow: true })) {
-      const clientOffset = monitor.getClientOffset()
-      updateInsertIndicator(clientOffset)
-    } else {
-      insertIndicator.show = false
-    }
-  },
-  drop: (draggedItem: any, monitor: any) => {
-    // 隐藏插入指示器
-    insertIndicator.show = false
-    
-    // 放置时处理移动逻辑
-    if (!monitor.didDrop()) {
-      // 通过 id 找到当前元素在数组中的实际索引
-      const dragIndex = components.value.findIndex(item => item.prop === draggedItem.id)
-      const clientOffset = monitor.getClientOffset()
-      const hoverIndex = findHoverIndex(clientOffset)
-      
-      console.log('放置项目:', {
-        draggedItem,
-        dragIndex,
-        hoverIndex,
-        clientOffset,
-        containerRect: document.querySelector('.sortable-container')?.getBoundingClientRect()
-      })
-      
-      if (dragIndex !== -1 && dragIndex !== hoverIndex) {
-        moveItem(dragIndex, hoverIndex)
-      }
-    }
-  },
-  collect: (monitor: any) => ({
-    isOver: monitor.isOver()
-  })
-})
 
 // 一个辅助函数，用于根据鼠标位置计算悬停位置的索引
 const findHoverIndex = (clientOffset: any) => {

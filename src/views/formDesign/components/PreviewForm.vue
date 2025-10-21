@@ -12,6 +12,7 @@ const { components } = storeToRefs(useEditorStore())
 const form = ref({})
 const formOptions = computed<FormOption>(() => ({
   menuBtn: false,
+  labelWidth: 110,
   column: components.value
 }))
 </script>

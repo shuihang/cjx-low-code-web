@@ -13,6 +13,7 @@ import { setupStore } from '@/store'
 
 import Particles from "@tsparticles/vue3";
 import { loadSlim } from "@tsparticles/slim" // 引入slim版本引擎
+import XColorPicker from '@/components/color-picker'
 
 import 'virtual:uno.css'
 import 'element-plus/dist/index.css'
@@ -31,6 +32,7 @@ const setupAll = async () => {
   app.use(CjxLowCode)
 
   app.config.globalProperties.$Dialog = $XDialog(app._context)
+  app.component('x-color-picker', XColorPicker)
 
   setupI18n(app)
 

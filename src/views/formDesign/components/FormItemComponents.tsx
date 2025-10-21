@@ -1,6 +1,22 @@
 import { defineComponent, createVNode } from 'vue'
 import type { Component } from 'vue'
-import { ElRow, ElCol, ElForm, ElFormItem, ElInput, ElSelect, ElOption, ElRadioGroup, ElRadio, ElCheckbox, ElCheckboxGroup, ElSwitch } from 'element-plus'
+import {
+  ElTooltip,
+  ElIcon,
+  ElRow,
+  ElCol,
+  ElForm,
+  ElFormItem,
+  ElInput,
+  ElSelect,
+  ElOption,
+  ElRadioGroup,
+  ElRadio,
+  ElCheckbox,
+  ElCheckboxGroup,
+  ElSwitch,
+} from 'element-plus'
+import { QuestionFilled } from '@element-plus/icons-vue'
 import useEditorStore from '@/store/modules/editor'
 import type { FormItemsDefaultPropsType } from '@/defaultProps'
 import type { FormItemType, FormTypeProps, FormColumnProps } from 'cjx-low-code'
@@ -69,9 +85,31 @@ export default defineComponent({
       const SubComponents = componentsMap[type]?.subComponent
       
       return (<>
-        <ElFormItem label={option.label}>
+        <ElFormItem
+          labelWidth={110}
+          v-slots={{
+            label: () => (
+              <div class={'flex flex-items-center'} style={option.labelStyle}>
+                {option.label}
+                {option.labelTip && (
+                  <ElTooltip
+                    v-slots={{
+                      content: () => option.labelTip,
+                    }}
+                    
+                  >
+                    <ElIcon>
+                      <QuestionFilled />
+                    </ElIcon>
+                  </ElTooltip>
+                )}
+              </div>
+            ),
+          }}
+        >
           {Components && createVNode(Components, {
-            ...currentProps
+            ...currentProps,
+            placeholder: option.placeholder
           }, SubComponents && dicData ?
           dicData.map((item) => {
             return createVNode(SubComponents, {

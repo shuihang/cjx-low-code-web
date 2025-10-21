@@ -1,7 +1,7 @@
 import { mapValues, without } from 'lodash-es'
 import type { FormColumnProps, FormTypeProps, FormItemType } from 'cjx-low-code'
 
-export type CommonDefaultProps = Pick<FormColumnProps, 'style' | 'span' | 'tip' | 'labelTip'| 'label' | 'prop' | 'type'>
+export type CommonDefaultProps = Pick<FormColumnProps, 'style' | 'span' | 'tip' | 'labelTip'| 'label' | 'prop' | 'type' | 'placeholder'>
 
 export type ControlPropertiesProps = FormColumnProps & FormColumnProps['style']
 
@@ -15,10 +15,12 @@ export type FormItemsDefaultPropsType = {
 export const commonDefaultProps: CommonDefaultProps = {
   label: '',
   prop: '',
-  style: {},
-  span: 24,
+  labelStyle: {
+    color: 'red'
+  },
   tip: '',
-  labelTip: ''
+  labelTip: '',
+  span: 24,
 }
 
 const dicData: DicDataType = [
@@ -30,13 +32,16 @@ const dicData: DicDataType = [
 
 export const formItemsDefaultProps: FormItemsDefaultPropsType = {
   input: {
+    placeholder: '请输入',
     ...commonDefaultProps,
+    
     input: {
       placeholder: '请输入',
     },
   },
   textarea: {
     ...commonDefaultProps,
+    placeholder: '请输入',
     textarea: {
       type: 'textarea',
       placeholder: '请输入',
@@ -45,6 +50,7 @@ export const formItemsDefaultProps: FormItemsDefaultPropsType = {
   },
   select: {
     ...commonDefaultProps,
+    placeholder: '请选择',
     dicData,
     select: {
       placeholder: '请选择',
@@ -52,6 +58,7 @@ export const formItemsDefaultProps: FormItemsDefaultPropsType = {
   },
   radio: {
     ...commonDefaultProps,
+    placeholder: '请选择',
     dicData,
     radio: {
       
@@ -59,6 +66,7 @@ export const formItemsDefaultProps: FormItemsDefaultPropsType = {
   },
   checkbox: {
     ...commonDefaultProps,
+    placeholder: '请选择',
     dicData,
     checkbox: {
       

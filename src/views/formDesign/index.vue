@@ -19,15 +19,13 @@
         
         <div class="h-100% w-100%" id="editorContainer">
           <PreviewMenu />
-          <div id="canvas-area" class="bg-white w-100% h-[calc(100%-20px)] box-border p-20px">
-           
-              <el-row>
-                <DndProvider :backend="HTML5Backend">
-                  <DropZone />
-                </DndProvider>
-              </el-row>
+          
+          <el-row id="canvas-area" class="bg-white w-100% h-[calc(100%-20px)] box-border p-20px">
             
-          </div>
+            <DropZone />
+            
+          </el-row>
+         
         </div>
       </el-main>
 
@@ -51,9 +49,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { CSSProperties } from 'vue'
-import { DndProvider } from 'vue3-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
-
 import { storeToRefs } from 'pinia';
 import type { TabsPaneContext } from 'element-plus'
 import type { FormOption } from 'cjx-low-code'
@@ -66,7 +61,7 @@ import useEditorStore from '@/store/modules/editor'
 
 
 // @ts-ignore
-const { components, currentElement, getCurrentElement } = storeToRefs(useEditorStore())
+const { currentElement, getCurrentElement } = storeToRefs(useEditorStore())
 
 const siderStyle: CSSProperties = {
   textAlign: 'center',
@@ -79,7 +74,6 @@ const activeName = ref('control')
 const activeKeyRight = ref('prop')
 
 
-const form = ref({})
 
 const handleClick = (tab: TabsPaneContext, event: Event) => {
   console.log(tab, event)
