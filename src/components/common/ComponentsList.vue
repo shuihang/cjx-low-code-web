@@ -257,7 +257,7 @@ const mouseEnter = (data: {row: FormComponentProps, elementId: string}) => {
   const { row, elementId } = data
   const element = document.getElementById(elementId) as HTMLDListElement
   // console.log(111, element.clientHeight)
-  console.log('enter-111111111', row.type)
+  // console.log('enter-111111111', row.type)
   enterComponent = row
   editorContainer?.addEventListener('dragover', handleDragOver)
   editorContainer?.addEventListener('drop', handleDrop)

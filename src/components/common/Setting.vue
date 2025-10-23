@@ -6,7 +6,7 @@
     :footer-style="{ textAlign: 'right' }"
     @close="onClose"
   > 
-    <template #title>
+    <template #header>
       <div class="title">
         <el-icon><Setting /></el-icon>网站设置
       </div>

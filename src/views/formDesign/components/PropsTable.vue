@@ -1,7 +1,8 @@
 <template>
   <div class="props-table" >
     <el-collapse v-model="activeKey" >
-      <el-collapse-item isActive v-for="(item, index) of finalProps"
+      <template v-for="(item, index) of finalProps">
+      <el-collapse-item isActive 
         :name="index + 1"  :title="item.attributeName" >
         <div
           v-for="(value, key) in item.mapPropsToForms"
@@ -13,8 +14,7 @@
             
             <component class="prop-component"
               :is="value.component"
-              v-model="value.value"
-
+              v-model="getValueByPath(value, key, item._objName).value"
               v-bind="value.extraProps"
               v-on="value.events"
               >
@@ -24,18 +24,26 @@
 
                 <component
                   :is="value.subComponent" 
-                  v-for="(prop, propName) in value.options"
-                  :label="propName" :value="prop.value" >
-                    <render-v-node v-if="prop.label" :v-node="prop.label"/>
+                  v-for="(prop) in value.options"
+                  :key="prop.value"
+                  :value="prop.value"
+                >
+                  <render-v-node v-if="prop.label" :v-node="prop.label"/>
                 </component>
 
+               
               </template>
+
+               <!-- <template #tag>
+                <div>11</div>
+              </template> -->
               
             </component>
           </div>
         </div>
       
       </el-collapse-item>
+      </template>
     </el-collapse>
   </div>
 </template>
@@ -84,6 +92,30 @@ const getItemStyle = (direction: FormInterface['direction']): CSSProperties => {
 }
 
 
+function getValueByPath(value: FormInterface, key: string, _objName?: string) {
+  return computed({
+    get() {
+      
+      if (!_objName) {
+        return value.value
+      }
+     
+      return value[_objName][key]
+    },
+    // setter
+    set(newValue) {
+      if (!_objName) {
+        value.value = newValue
+        return
+      }
+
+      // console.log('getValueByPath', value[_objName].value )
+      value[_objName][key] = newValue
+    },
+  })
+}
+
+
 
 type FormProps = {
   [p in keyof ControlPropertiesProps]: FormInterface
@@ -91,7 +123,7 @@ type FormProps = {
 
 type PropsToFormsList = Array<{
   attributeName: string,
-  objName: string,
+  _objName?: string,
   mapPropsToForms: FormProps
 }>
 
@@ -102,35 +134,63 @@ interface Props {
 const activeKey = ref<(string | number)[]>(['']);
 
 setTimeout(() => {
-  activeKey.value = [1, 2, 3, 4]
+  activeKey.value = [1, 2]
 }, 100)
 
-let mapPropsToFormsList = getMapPropsToFormsList(themeColor.value)
+const props = defineProps<Props>()
+
+let mapPropsToFormsList = getMapPropsToFormsList(props.data.type || 'input')
 
 
 const emit = defineEmits(['change'])
 
-const props = defineProps<Props>()
-
-const testType = {
-  label: '',
-  placeholder: '请输入',
-  span: 24,
-  fontFamily: '',
-  fontSize: 12
-}
 
 const finalProps = ref<PropsToFormsList>(getFinalProps())
-
+// console.log('finalProps', finalProps.value)
 
 function getFinalProps():PropsToFormsList {
   // console.log(1111, props.type)
   return reduce(mapPropsToFormsList, (result, value, index) => { 
   
     // console.log(value)
-    const mapPropsToForms = reduce(props.data, (resultArr, res, key) => { 
+    const { _objName, mapPropsToForms: objMapPropsToForms } = value
+    
+  
+    console.log(1111, props.data)
+    // if (_objName) {
+    //   console.log(1111, props.data[_objName])
+    // }
+   
+    const mapPropsToForms = _objName ? reduce(props.data[_objName], (resultArr, res, key) => {
+     
+      // console.log(2222, resultArr, key)
+      const item = objMapPropsToForms[key]
+
+      if (item) {
+        
+        const {eventName = 'change', initialTransform, afterTransform, extraProps = {} } = item
+        // console.log(1111, item)
+        const newItem: FormInterface = {
+          ...item,
+          [_objName]: {
+            [key]: initialTransform ? initialTransform(res) : res,
+          },
+          extraProps,
+          eventName,
+          events: {
+            [eventName]: (e: any) => { emit('change', { key: _objName, value: { [key]: afterTransform ? afterTransform(e) : e }})}
+          },
+        }
+
+        resultArr[key] = newItem
+        
+      }
       
-      // console.log(1111, value.mapPropsToForms, key)
+      // console.log('mapPropsToForms', resultArr)
+      return resultArr; 
+    }, {} as FormProps) : reduce(props.data, (resultArr, res, key) => { 
+      
+      // console.log(2222, resultArr, key)
       const item = value.mapPropsToForms[key]
       
       if (item) {
@@ -150,6 +210,7 @@ function getFinalProps():PropsToFormsList {
         }
 
         resultArr[key] = newItem
+        
       }
       // console.log(0, resultArr)
       return resultArr; 
@@ -157,42 +218,32 @@ function getFinalProps():PropsToFormsList {
 
     result[index] = {
       attributeName: value.attributeName,
+      _objName,
       mapPropsToForms: mapPropsToForms
     } 
-    // console.log(1111, mapPropsToForms)
+    // console.log(1111, result)
     return result; 
   }, [] as PropsToFormsList); 
 }
 
-const getShowHeight = (key?: string) => {
-  if(!key) {
-    return {}
-  }
-  const styles: {height?: string, overflow?: string} = {}
-  if (key === 'url') {
-    // styles.height = props.type.actionType === 'url' ? '36px' : '0'
-    styles.overflow = 'hidden'
-  }
-  return styles
-}
 
-// console.log(99, finalProps.value)
 watch(props, (value) =>{
+  mapPropsToFormsList = getMapPropsToFormsList(value.data.type || 'input')
   finalProps.value = getFinalProps()
 })
 
-watch(() => themeColor.value, (newVal) => {
-  // console.log(1111, newVal)
-  mapPropsToFormsList = getMapPropsToFormsList(newVal)
-  finalProps.value = getFinalProps()
-})
+// watch(() => themeColor.value, (newVal) => {
+//   // console.log(1111, newVal)
+//   mapPropsToFormsList = getMapPropsToFormsList(newVal)
+//   finalProps.value = getFinalProps()
+// })
 
 </script>
 
 <style lang="scss">
 
 .props-table {
-  // height: calc(100vh - 150px);
+  height: calc(100vh - 154px);
   overflow-y: auto;
   overflow-x: hidden;
   text-align: left;

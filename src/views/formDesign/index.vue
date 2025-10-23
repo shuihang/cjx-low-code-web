@@ -85,6 +85,7 @@ const addItem = (row: FormComponentProps) => {
 
 
 const handleChange = ({ key, value }) =>{
+  console.log(key, value)
   useEditorStore().updateComponents({key, value})
 }
 </script>

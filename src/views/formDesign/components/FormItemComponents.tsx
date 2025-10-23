@@ -87,6 +87,7 @@ export default defineComponent({
       return (<>
         <ElFormItem
           labelWidth={110}
+          
           v-slots={{
             label: () => (
               <div class={'flex flex-items-center'} style={option.labelStyle}>
@@ -109,6 +110,7 @@ export default defineComponent({
         >
           {Components && createVNode(Components, {
             ...currentProps,
+            type: option.type,
             placeholder: option.placeholder
           }, SubComponents && dicData ?
           dicData.map((item) => {

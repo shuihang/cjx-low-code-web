@@ -1,5 +1,6 @@
 import { VNode, h } from 'vue'
-import type { FormColumnProps, FormTypeProps } from 'cjx-low-code'
+import type { FormColumnProps, FormTypeProps, FormItemType } from 'cjx-low-code'
+import { dicData } from './defaultProps'
 import type { ControlPropertiesProps } from './defaultProps'
 
 
@@ -98,14 +99,156 @@ export type PropsToForms = {
   [p in keyof ControlPropertiesProps]?: PropsToForm
 }
 
+
+
 export type PropsToFormsList = Array<{
   attributeName: string,
-  objName?: string,
+  _objName?: string,
   mapPropsToForms: PropsToForms
 }>
 
+export type PropsToFormsListMap = {
+  [K in keyof FormTypeProps]: {
+  attributeName: string,
+  _objName?: K,
+  mapPropsToForms: {
+    [p in keyof FormTypeProps[K]]?: PropsToForm
+  }
+}
+}
 
-export default function getMapPropsToFormsList(color: string): PropsToFormsList {
+const propsToFormsListMap: PropsToFormsListMap = {
+  input: {
+    attributeName: '单行输入框',
+    _objName: 'input',
+    mapPropsToForms: {
+      maxlength: {
+        text: '最大长度',
+        component: 'el-input-number',
+        extraProps: {
+          
+        }
+      },
+      
+    }
+  },
+  textarea: {
+    attributeName: '多行输入框',
+    _objName: 'textarea',
+    mapPropsToForms: {
+      rows: {
+        text: '行数',
+        component: 'el-input-number',
+        // initialTransform: (v: string) => parseInt(v),
+        // afterTransform: (e: number) => e ? `${e}px` : '',
+        extraProps: {
+
+        }
+      },
+      maxlength: {
+        text: '最大长度',
+        component: 'el-input-number',
+        extraProps: {
+
+        }
+      },
+      
+    }
+  },
+  select: {
+    attributeName: '下拉选择框',
+    // _objName: 'select',
+    mapPropsToForms: {
+      dicData: {
+        text: '字典数据',
+        component: 'el-select',
+        subComponent: 'el-option',
+        options: [
+          ...dicData
+        ],
+        extraProps: {
+          vModel: 'dicData'
+        },
+      } 
+    }
+  },
+  checkbox: {
+    attributeName: '多选框',
+    // _objName: 'checkbox',
+    mapPropsToForms: {
+      dicData: {
+        text: '字典数据',
+        component: 'el-select',
+        subComponent: 'el-option',
+        options: [
+          ...dicData
+        ],
+        extraProps: {
+          vModel: 'dicData'
+        },
+      }
+    }
+  },
+  radio: {
+    attributeName: '单选框',
+    // _objName: 'radio',
+    mapPropsToForms: {
+      dicData: {
+        text: '字典数据',
+        component: 'el-select',
+        subComponent: 'el-option',
+        options: [
+          ...dicData
+        ],
+        extraProps: {
+          vModel: 'dicData'
+        },
+      }
+    }
+  },
+  switch: {
+    attributeName: '开关',
+    _objName: 'switch',
+    mapPropsToForms: {
+      activeText: {
+        text: '开启时文字',
+        component: 'el-input',
+        eventName: 'input',
+        extraProps: {
+
+        }
+      },
+      inactiveText: {
+        text: '关闭时文字',
+        component: 'el-input',
+        eventName: 'input',
+        extraProps: {
+
+        }
+      },
+      activeValue: {
+        text: '开启时值',
+        component: 'el-input',
+        eventName: 'input',
+        extraProps: {
+
+        }
+      },
+      inactiveValue: {
+        text: '关闭时值',
+        component: 'el-input',
+        eventName: 'input',
+        extraProps: {
+
+        }
+      },
+    }
+  }
+}
+
+
+export default function getMapPropsToFormsList(type: FormItemType): PropsToFormsList {
+  const item = propsToFormsListMap[type]
   return [
     {
       attributeName: '基本设置',
@@ -155,6 +298,7 @@ export default function getMapPropsToFormsList(color: string): PropsToFormsList 
         },
       }
     },
+    item,
     // {
     //   attributeName: '属性设置',
     //   mapPropsToForms: {
@@ -163,7 +307,7 @@ export default function getMapPropsToFormsList(color: string): PropsToFormsList 
     // },
     {
       attributeName: '样式设置',
-      objName: 'style',
+      _objName: 'labelStyle',
       mapPropsToForms: {
         fontFamily: {
           text: '标题字体',
@@ -186,7 +330,7 @@ export default function getMapPropsToFormsList(color: string): PropsToFormsList 
         },
         color: {
           text: '标题颜色',
-          component: 'b-color-picker',
+          component: 'x-color-picker',
           extraProps: {
             
           }

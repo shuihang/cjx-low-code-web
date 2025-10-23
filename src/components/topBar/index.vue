@@ -23,7 +23,7 @@
            
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item  command="my" v-show="currentRouteName === 'FormDesign'" >
+                <el-dropdown-item  command="my" v-if="currentRouteName === 'FormDesign'" >
                   <el-icon :size="14"><Wallet /></el-icon>
                   我的作品
                 </el-dropdown-item>

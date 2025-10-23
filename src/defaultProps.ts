@@ -1,9 +1,9 @@
 import { mapValues, without } from 'lodash-es'
 import type { FormColumnProps, FormTypeProps, FormItemType } from 'cjx-low-code'
 
-export type CommonDefaultProps = Pick<FormColumnProps, 'style' | 'span' | 'tip' | 'labelTip'| 'label' | 'prop' | 'type' | 'placeholder'>
+export type CommonDefaultProps = Pick<FormColumnProps, 'style' | 'span' | 'tip' | 'labelTip'| 'label' | 'prop' | 'type' | 'placeholder' | 'labelStyle'>
 
-export type ControlPropertiesProps = FormColumnProps & FormColumnProps['style']
+export type ControlPropertiesProps = FormColumnProps & FormColumnProps['style'] & FormColumnProps['input']
 
 export type DicDataType = Array<{ label: string, value: string }>
 
@@ -16,14 +16,21 @@ export const commonDefaultProps: CommonDefaultProps = {
   label: '',
   prop: '',
   labelStyle: {
-    color: 'red'
+    fontSize: '12px',
+    fontFamily: '',
+    color: ''
   },
   tip: '',
   labelTip: '',
   span: 24,
 }
 
-const dicData: DicDataType = [
+// export const inputDefaultProps: FormColumnProps['input'] = {
+//   showWordLimit: false,
+//   maxlength: 50,
+// }
+
+export const dicData: DicDataType = [
   { label: '选项1', value: '1' },
   { label: '选项2', value: '2' },
   { label: '选项3', value: '3' },
@@ -34,16 +41,17 @@ export const formItemsDefaultProps: FormItemsDefaultPropsType = {
   input: {
     placeholder: '请输入',
     ...commonDefaultProps,
-    
     input: {
       placeholder: '请输入',
+      showWordLimit: false,
+      maxlength: 50,
     },
   },
   textarea: {
     ...commonDefaultProps,
     placeholder: '请输入',
     textarea: {
-      type: 'textarea',
+      maxlength: 200,
       placeholder: '请输入',
       rows: 4,
     }
@@ -75,6 +83,10 @@ export const formItemsDefaultProps: FormItemsDefaultPropsType = {
   switch: {
     ...commonDefaultProps,
     switch: {
+      activeValue: 1,
+      inactiveValue: 0,
+      activeText: '',
+      inactiveText: '',
     }
   }
 }
