@@ -122,7 +122,7 @@ const onClose = () => {
 </script>
 
 <style lang="scss" scoped>
-@import "../../theme/styles/mixin.scss";
+@use "../../theme/styles/mixin.scss" as *;
 .title {
   @include color;
 }

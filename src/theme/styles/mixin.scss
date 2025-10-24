@@ -1,4 +1,4 @@
-@import './theme.scss';
+@use './theme.scss';
 
 @mixin color() {
   [data-theme="#1677ff"] & {

@@ -49,13 +49,15 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     // 项目使用的vite插件。 单独提取到build/vite/plugin中管理
     plugins: createVitePlugins(),
     css: {
-      preprocessorOptions: {
-        // scss: {
-        //   additionalData: '@import "./src/styles/variables.scss";',
-        //   javascriptEnabled: true
-        // }
-      }
+    preprocessorOptions: {
+      scss: {
+        // 告诉 Sass 编译器使用现代 API
+        api: 'modern-compiler',
+        // （可选）如果你不希望看到 legacy-js-api 警告，可以取消下面这行的注释
+        // silenceDeprecations: ['legacy-js-api'],
+      },
     },
+  },
     resolve: {
       extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.scss', '.css'],
       alias: [
