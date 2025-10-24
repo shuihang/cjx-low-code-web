@@ -109,7 +109,7 @@ function getValueByPath(value: FormInterface, key: string, _objName?: string) {
         return
       }
 
-      // console.log('getValueByPath', value[_objName].value )
+      console.log('getValueByPath', value[_objName] )
       value[_objName][key] = newValue
     },
   })

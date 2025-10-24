@@ -8,6 +8,7 @@ import {
   ElForm,
   ElFormItem,
   ElInput,
+  ElInputNumber,
   ElSelect,
   ElOption,
   ElRadioGroup,
@@ -37,7 +38,7 @@ const componentsMap: ComponentsMapType= {
     component: ElInput,
   },
   inputNumber: {
-    component: ElInput,
+    component: ElInputNumber,
   },
   select: {
     component: ElSelect,
@@ -111,7 +112,10 @@ export default defineComponent({
           {Components && createVNode(Components, {
             ...currentProps,
             type: option.type,
-            placeholder: option.placeholder
+            placeholder: option.placeholder,
+            style: {
+              width: '100%',
+            },
           }, SubComponents && dicData ?
           dicData.map((item) => {
             return createVNode(SubComponents, {

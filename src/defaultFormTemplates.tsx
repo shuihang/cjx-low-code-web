@@ -62,6 +62,11 @@ function getDefaultFormTemplates(color: string): FormComponentProps[] {
       icon: CheckBox,
     },
     {
+      label: '数字输入框',
+      type: 'inputNumber',
+      icon: CheckBox
+    },
+    {
       label: '开关',
       type: 'switch',
       icon: Switch,

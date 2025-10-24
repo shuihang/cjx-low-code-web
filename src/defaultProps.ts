@@ -56,6 +56,15 @@ export const formItemsDefaultProps: FormItemsDefaultPropsType = {
       rows: 4,
     }
   },
+  inputNumber: {
+    ...commonDefaultProps,
+    placeholder: '请输入',
+    inputNumber: {
+      min: undefined,
+      max: undefined,
+      step: undefined,
+    }
+  },
   select: {
     ...commonDefaultProps,
     placeholder: '请选择',

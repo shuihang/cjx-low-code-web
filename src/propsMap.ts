@@ -1,7 +1,43 @@
-import { VNode, h } from 'vue'
-import type { FormColumnProps, FormTypeProps, FormItemType } from 'cjx-low-code'
+import { h } from 'vue'
+import type { ExtractPropTypes, InputHTMLAttributes, TextareaHTMLAttributes, VNode } from 'vue';
+import type { Column, ElSelect, ElTree, TableColumnCtx } from 'element-plus';
+import type { CascaderInstance, CascaderProps, CheckboxProps, DatePickerProps, InputNumberInstance, InputProps, RadioProps, SwitchInstance } from 'element-plus'
+import type { FormColumnProps, FormItemType, FormTypeProps } from 'cjx-low-code'
 import { dicData } from './defaultProps'
 import type { ControlPropertiesProps } from './defaultProps'
+
+
+// type OmitStr = 'modelValue';
+// type SelectProps = Omit<ExtractPropTypes<InstanceType<typeof ElSelect>>, OmitStr>;
+// export interface FormTypeProps {
+//     /** input组件的配置项 具体参考element-plus官网 */
+//     input: Partial<Omit<InputProps, OmitStr>> & InputHTMLAttributes;
+//     /** textarea组件的配置项 具体参考element-plus官网 */
+//     textarea: Omit<InputProps, OmitStr | 'type'> & TextareaHTMLAttributes;
+//     /** inputNumber组件的配置项 具体参考element-plus官网 */
+//     inputNumber: Omit<InputNumberInstance, OmitStr>;
+//     /** select组件的配置项 具体参考element-plus官网 */
+//     select: SelectProps;
+//     /** checkbox组件的配置项 具体参考element-plus官网 */
+//     checkbox: Omit<CheckboxProps, OmitStr>;
+//     /** datePicker组件的配置项 具体参考element-plus官网 */
+//     datePicker: Omit<DatePickerProps, OmitStr>;
+//     /** radio组件的配置项 具体参考element-plus官网 */
+//     radio: Omit<RadioProps, OmitStr>;
+//     /** radio组件的配置项 button类型 */
+//     radioButton: Omit<RadioProps, OmitStr>;
+//     /** cascader组件的配置项 具体参考element-plus官网 */
+//     cascader: Omit<CascaderInstance, OmitStr | 'props'> & {
+//         props: CascaderProps;
+//     };
+//     /** switch组件的配置项 具体参考element-plus官网 */
+//     switch: Omit<SwitchInstance, OmitStr>;
+//     /** treeSelect组件的配置项 具体参考element-plus官网 */
+//     treeSelect:  Omit<ExtractPropTypes<InstanceType<typeof ElTree>>, OmitStr>;
+//     /** 上传组件配置项  */
+//     /** 可编辑表格 表格表单配置项 */
+//     // editTable?: Partial<Omit<EditTableProps, OmitStr>>;
+// }
 
 
 // 字体
@@ -107,14 +143,16 @@ export type PropsToFormsList = Array<{
   mapPropsToForms: PropsToForms
 }>
 
+type HaveDictDataAttributes = Extract<FormItemType, 'select' | 'checkbox' | 'radio'  | 'radioButton' | 'cascader'>
+
 export type PropsToFormsListMap = {
-  [K in keyof FormTypeProps]: {
-  attributeName: string,
-  _objName?: K,
-  mapPropsToForms: {
-    [p in keyof FormTypeProps[K]]?: PropsToForm
-  }
-}
+  [K in keyof FormTypeProps]-?: {
+    attributeName: string,
+    _objName?: K,
+    mapPropsToForms: {
+      [p in keyof Required<FormTypeProps>[K]]?: PropsToForm
+    } 
+  } & (K extends HaveDictDataAttributes ? { mapPropsToForms: { dicData: PropsToForm } } : {})
 }
 
 const propsToFormsListMap: PropsToFormsListMap = {
@@ -153,6 +191,42 @@ const propsToFormsListMap: PropsToFormsListMap = {
         }
       },
       
+    }
+  },
+  inputNumber: {
+    attributeName: '数字输入框',
+    _objName: 'inputNumber',
+    mapPropsToForms: {
+      min: {
+        text: '最小值',
+        component: 'el-input-number',
+        extraProps: {
+
+        }
+      },
+      max: {
+        text: '最大值',
+        component: 'el-input-number',
+        extraProps: {
+
+        }
+      },
+      step: {
+        text: '步长',
+        component: 'el-input-number',
+        extraProps: {
+          min: 1,
+          max: 100,
+        }
+      },
+      stepStrictly: {
+        text: '是否严格步长',
+        component: 'el-switch',
+        extraProps: {
+          activeText: '是',
+          inactiveText: '否'
+        }
+      }
     }
   },
   select: {
@@ -206,6 +280,65 @@ const propsToFormsListMap: PropsToFormsListMap = {
       }
     }
   },
+  radioButton: {
+    attributeName: '按钮单选框',
+    _objName: 'radioButton',
+    mapPropsToForms: {
+      dicData: {
+        text: '字典数据',
+        component: 'el-select',
+        subComponent: 'el-option',
+        options: [
+          ...dicData
+        ],
+        extraProps: {
+          vModel: 'dicData'
+        },
+      }
+    }
+  },
+  cascader: {
+    attributeName: '级联选择器',
+     _objName: 'cascader',
+    mapPropsToForms: {
+      dicData: {
+        text: '字典数据',
+        component: 'el-select',
+        subComponent: 'el-option',
+      }
+    }
+  },
+  datePicker: {
+    attributeName: '日期选择器',
+    _objName: 'datePicker',
+    mapPropsToForms: {
+      type: {
+        text: '类型',
+        component: 'el-select',
+        subComponent: 'el-option',
+        options: [
+          { value: 'date', label: '日' },
+          { value: 'week', label: '周' },
+          { value: 'month', label: '月' },
+          { value: 'year', label: '年' },
+        ],
+        extraProps: {
+          vModel: 'dicData'
+        },
+      }
+    }
+  },
+  treeSelect: {
+    attributeName: '树选择器',
+    _objName: 'treeSelect',
+    mapPropsToForms: {
+      // dicData: {
+      //   text: '字典数据',
+      //   component: 'el-select',
+      //   subComponent: 'el-option',
+      // }
+    }
+  },
   switch: {
     attributeName: '开关',
     _objName: 'switch',
@@ -242,6 +375,13 @@ const propsToFormsListMap: PropsToFormsListMap = {
 
         }
       },
+    }
+  },
+  editTable: {
+    attributeName: '表格',
+    _objName: 'editTable',
+    mapPropsToForms: {
+      
     }
   }
 }
